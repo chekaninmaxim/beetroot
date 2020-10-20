@@ -59,10 +59,37 @@ let users = [
  {id: 7, name: "Steve", age: "30"},
  {id: 8, name: "Jim", age: "40"},
  {id: 9, name: "Willy", age: "20"}
-]
+];
+
+for (let user of users) {
+  const userNode = document.createElement('span');
+  userNode.style.display = 'block';
+  userNode.id = user.id;
+  userNode.innerText = user.name;
+  res.appendChild(userNode);
+}
+
+const uniqueAges = users
+  .map(item => item.age)
+  .filter((item, i, arr) => arr.indexOf(item) === i);
+
+for (let age of uniqueAges) {
+  const option = document.createElement('option');
+  option.value = age;
+  option.innerText = age;
+  usersSelect.appendChild(option);
+}
+
+usersSelect.onchange = e => applyFilter(e.target.value);
+
+function applyFilter(age) {
+  for (let user of users) {
+    document.getElementById(user.id).style.display =
+      user.age == age || isNaN(age) ? 'block' : 'none';
+  }
+}
 
 </script>
-
 
 </body>
 </html>
