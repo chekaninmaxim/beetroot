@@ -29,20 +29,21 @@ const list = document.getElementById('list');
 
 list.removeChild(document.getElementsByClassName("list-group-item")[0]);
 
-const newItems = map(arr, name => {
-	const item = document.createElement("li");
-	item.className = 'list-group-item';
-	item.innerText = name;
-	return item;
-});
+const listItem = name => {
+  const item = document.createElement("li");
+  item.className = 'list-group-item';
+  item.innerText = name;
+  return item;
+}
+
+const newItems = map(arr, listItem);
 
 for (let elem of newItems) {
 	list.appendChild(elem);
 }
 
 function map(list, fn) {
-  list.sort();
-  return list.map(fn);
+  return list.sort().map(fn);
 }
 
 </script>

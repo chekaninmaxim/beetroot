@@ -12,7 +12,7 @@
         <div class="col-sm-3">
             <div class="form-group">
                 <select id="users-select" class="custom-select">
-                    <option>Choose age</option>
+                    <option value="">Choose age</option>
                 </select>
             </div>
         </div>
@@ -85,7 +85,7 @@ usersSelect.onchange = e => applyFilter(e.target.value);
 function applyFilter(age) {
   for (let user of users) {
     document.getElementById(user.id).style.display =
-      user.age == age || isNaN(age) ? 'block' : 'none';
+      user.age == age || !age ? 'block' : 'none';
   }
 }
 
