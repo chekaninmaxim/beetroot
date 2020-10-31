@@ -27,15 +27,26 @@
 let arr = ["Tom", "Steve", "Bill", "Rita", "Pete", "Ashley"];
 const list = document.getElementById('list');
 
-// Сигнатура map
-function map(list, fn){
-    // todo
- }
+list.removeChild(document.getElementsByClassName("list-group-item")[0]);
 
+const listItem = name => {
+  const item = document.createElement("li");
+  item.className = 'list-group-item';
+  item.innerText = name;
+  return item;
+}
 
+const newItems = map(arr, listItem);
+
+for (let elem of newItems) {
+	list.appendChild(elem);
+}
+
+function map(list, fn) {
+  return list.sort().map(fn);
+}
 
 </script>
-
 
 </body>
 </html>
