@@ -1,12 +1,14 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env = { mode: "development" }) => {
   const isProduction = env.mode === "production";
   const plugins = [
     new MiniCssExtractPlugin({
       filename: "css/style.css"
-    })
+    }),
+    new OptimizeCssPlugin()
   ];
 
   return {
@@ -45,7 +47,7 @@ module.exports = (env = { mode: "development" }) => {
       ]
     },
     plugins,
-      devServer: {
+    devServer: {
       contentBase: path.join(__dirname, "src"),
       compress: true,
       port: 9000,

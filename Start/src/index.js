@@ -1,3 +1,3 @@
 import './scss/style.scss';
-document.getElementById("hello").style = "greeter";
+document.getElementById("hello").class = "greeter";
 console.log("hello");
