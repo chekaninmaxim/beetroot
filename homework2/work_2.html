@@ -12,6 +12,11 @@
        *    sum(a)(b)  и возвращать сумму двух чисел
        *   Например  sum(3)(1) -> 4  , sum(7)(-1) -> 6
        * */
+       function(a) {
+          return function(b) {
+            return a + b;
+          }
+        }
     </script>
   </body>
 </html>
