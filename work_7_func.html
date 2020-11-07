@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSX, props</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@16.8.3/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.8.3/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script type="text/babel">
+        const URL = "https://jsonplaceholder.typicode.com/users";
+
+        const UserView = props => (
+            <div>Name: {props.data.name} User name: {props.data.username} email: {props.data.email} </div>
+        );
+
+        UserView.propTypes = {
+            data: PropTypes.shape({
+                name: PropTypes.string,
+                username: PropTypes.string,
+                email: PropTypes.string
+            })
+        }
+
+        const UsersList = props => (
+            <div className="col-md-9 col-12">
+                {props.users.map(u => <UserView key={u.id} data={u} />)}
+            </div>
+        )
+
+        UsersList.propTypes = {
+            users: PropTypes.array
+        }
+
+        const FilterableUsers = props => {
+            const [filterString, setFilterString] = React.useState("");
+
+            const onChangeFilter = (e) => setFilterString(e.target.value);
+
+            const filterFn = u => filterString === "" ||
+                u.name.toLowerCase().indexOf(filterString.toLowerCase()) >= 0;
+
+            return (
+                <div className="row"> 
+                    <div className="col-md-3 col-12">
+                        <input
+                            className="form-control"
+                            value={filterString}
+                            onChange={onChangeFilter}
+                        />
+                    </div>
+                    <UsersList users={props.users.filter(filterFn)} />
+                </div>
+            )
+        }
+
+        FilterableUsers.propTypes = {
+            users: PropTypes.array
+        }
+
+        const root = document.getElementById("root");
+        const App = () => {
+            const [users, setUsers] = React.useState([]);
+            React.useEffect(() => {
+                fetch(URL)
+                .then(response => response.json())
+                .then(allUsers => setUsers(allUsers))
+            }, []);
+
+            return (
+                <div className="container">
+                    <FilterableUsers users={users} />
+                </div>
+            );
+        }
+        ReactDOM.render(<App />, root);
+    </script>
+</body>
+
+</html>
