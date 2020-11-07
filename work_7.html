@@ -28,7 +28,7 @@
     }
 
     UserView.propTypes = {
-        data: PropTypes.shape({
+        data: PropTypes.exact({
             name: PropTypes.string,
             username: PropTypes.string,
             email: PropTypes.string
@@ -36,11 +36,16 @@
     }
 
     class UsersList extends React.Component {
-    
+
         render() {
             return (
                 <div className="col-12 col-md-9">
-                    {this.props.users.map(u => <UserView key={u.id} data={u} />)}
+                    {
+                        this.props.users.map(u => <UserView
+                            key={u.id}
+                            data={{name: u.name, username: u.username, email: u.email}} />
+                        )
+                    }
                 </div>
             )
         }

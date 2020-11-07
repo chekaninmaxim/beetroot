@@ -23,7 +23,7 @@
         );
 
         UserView.propTypes = {
-            data: PropTypes.shape({
+            data: PropTypes.exact({
                 name: PropTypes.string,
                 username: PropTypes.string,
                 email: PropTypes.string
@@ -32,7 +32,12 @@
 
         const UsersList = props => (
             <div className="col-md-9 col-12">
-                {props.users.map(u => <UserView key={u.id} data={u} />)}
+                {
+                    props.users.map(u => <UserView
+                        key={u.id}
+                        data={{name: u.name, username: u.username, email: u.email}} />
+                    )
+                }
             </div>
         )
 
