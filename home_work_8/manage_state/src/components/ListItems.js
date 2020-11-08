@@ -1,19 +1,14 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Item from './Item';
 import Filter from './Filter';
 
-class ListItems extends Component {
-    state = {
-        searchTerm: "",
-    }
+function ListItems(props) {
+    const [searchTerm, setSearchTerm] = React.useState("");
 
-    updateSearchTerm = event => {
-        this.setState({ searchTerm: event.target.value });
-    }
+    const updateSearchTerm = event => setSearchTerm(event.target.value);
 
-    get getBody() {
-        const { searchTerm } = this.state;
-        const { items, removeItem, toggleItem } = this.props;
+    const getBody = () => {
+        const { items, removeItem, toggleItem } = props;
 
         return items
             .filter(item => item.value.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -27,19 +22,13 @@ class ListItems extends Component {
             ))
     }
 
-    render() {
-        const { searchTerm } = this.state;
-        const { title } = this.props;
-
-        return (
-            <section>
-                <h3 className='mb-3'>{title}</h3>
-                <Filter searchTerm={searchTerm} onChange={this.updateSearchTerm} />
-
-                <ul className='list-group mb-3'>{this.getBody}</ul>
-            </section>
-        )
-    }
+    return (
+        <section>
+            <h3 className='mb-3'>{props.title}</h3>
+            <Filter searchTerm={searchTerm} onChange={updateSearchTerm} />
+            <ul className='list-group mb-3'>{getBody()}</ul>
+        </section>
+    )
 }
 
 export default ListItems;
