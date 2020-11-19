@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSX, props</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@16.8.3/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.8.3/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script type="text/babel">
+    const URL = "https://jsonplaceholder.typicode.com/users";
+
+    class UserView extends React.Component {
+
+        render() {
+            return (
+                <div>Name: {this.props.data.name} User name: {this.props.data.username} email: {this.props.data.email} </div>
+            )
+        }
+    }
+
+    UserView.propTypes = {
+        data: PropTypes.exact({
+            name: PropTypes.string,
+            username: PropTypes.string,
+            email: PropTypes.string
+        })
+    }
+
+    class UsersList extends React.Component {
+
+        render() {
+            return (
+                <div className="col-12 col-md-9">
+                    {
+                        this.props.users.map(u => <UserView
+                            key={u.id}
+                            data={{name: u.name, username: u.username, email: u.email}} />
+                        )
+                    }
+                </div>
+            )
+        }
+    }
+
+    UsersList.propTypes = {
+        users: PropTypes.array
+    }
+
+    class FilterableUsers extends React.Component {
+
+        state = {
+            filterString: ""
+        }
+
+        onChangeFilter = (e) => {
+            this.setState({filterString: e.target.value})
+        }
+
+        filterFn = u => this.state.filterString === "" ||
+            u.name.toLowerCase().indexOf(this.state.filterString.toLowerCase()) >= 0;
+
+        render() {
+            return (
+                <div className="row">
+                    <div className="col-12 col-md-3">
+                        <input
+                            className="form-control"
+                            value={this.state.filterString}
+                            onChange={this.onChangeFilter}
+                        />
+                    </div>
+                    <UsersList users={this.props.users.filter(this.filterFn)}/>
+                </div>
+            )
+        }
+    }
+
+    FilterableUsers.propTypes = {
+        users: PropTypes.array
+    }
+
+    const root = document.getElementById("root");
+    class App extends React.Component {
+        state = {
+            users: [],
+            errorMsg: ""  
+        };
+
+        componentDidMount() {
+            fetch(URL)
+            .then(users => users.json())
+            .then(users => {
+                this.setState({ users: users })
+            })
+            .catch(error => this.setState({error}))
+        }
+        render() {
+            return (
+                <div className = "container">
+                    {this.state.errorMsg ? errorMsg : <FilterableUsers users={this.state.users} />}
+                </div> 
+            )
+        }
+        
+    }
+
+    ReactDOM.render(<App />, root);
+    </script>
+</body>
+
+</html>
