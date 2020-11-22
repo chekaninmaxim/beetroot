@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of friends</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div id = "root" class="container"></div>
+<script>
+const container = document.getElementById("root");
+const URL = "https://jsonplaceholder.typicode.com/";
+
+function getPostView(title, body, userId) {
+  const postView = document.createElement("div");
+  postView.class = "row";
+  
+  const titleSection = document.createElement("h2");
+  titleSection.class = "col-12";
+  titleSection.innerHTML = title;
+  
+  const bodySection = document.createElement("p");
+  bodySection.innerHTML = body;
+  bodySection.class = "col-11";
+
+  const authorButton = document.createElement("button");
+  authorButton.class = "col-1 btn btn-primary";
+  authorButton.innerHTML = "author";
+  let clicked = false;
+  authorButton.onclick = () => {
+    if (!clicked) {
+      fetch(URL + `users/${userId}`)
+      .then(userData => userData.json())
+      .then(({name, username, email}) => {
+        const userDataView = document.createElement("p");
+        userDataView.class = "col-2";
+        userDataView.innerHTML = `name: ${name} userName: ${username} email: ${email}`;
+        postView.appendChild(userDataView);
+      })
+      .finally(() => clicked = true)
+    }
+  };
+
+  postView.appendChild(titleSection);
+  postView.appendChild(bodySection);
+  postView.appendChild(authorButton);
+  return postView;
+}
+
+fetch(URL + "posts/")
+.then(response => response.json())
+.then(posts => {
+  for (let i = 0; i < 10; i++) {
+    const p = posts[i];
+    root.appendChild(getPostView(p.title, p.body, p.userId));
+  }
+})
+.catch(e => console.log(e))
+</script>
+
+</body>
+</html>
