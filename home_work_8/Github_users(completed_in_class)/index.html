@@ -74,11 +74,14 @@
               </div>
       )
       
-      const CartList = ({ data }) => (
+      const CartList = ({ data, onDelete }) => (
               <div className="cart-box">
-                {data.map(profile => (
-                  <Cart key={profile.id} profile={profile} />
-                ))}
+                {data.map((profile, i) => (
+                  <div key={profile.id}>
+                    <Cart profile={profile} />
+                    <button onClick = {() => onDelete(i)}> DELETE </button>
+                    </div>
+                  ))}
               </div>
       )
 
@@ -94,22 +97,22 @@
           this.setState({ data: [...this.state.data, user] });
         }
 
+        deleteCartByIdx = idx => {
+          this.setState(({data}) => {
+            console.log(data, idx);
+            return {data: data.slice(0, idx).concat(data.slice(idx + 1))}
+          })
+        }
+
         render() {
           return (
-                  <div className="container">
-                    <Form submit={this.addUser} />
-                    <CartList data={this.state.data}/>
-                  </div>
+            <div className="container">
+              <Form submit={this.addUser} />
+              <CartList data={this.state.data} onDelete={this.deleteCartByIdx}/>
+            </div>
           )
         }
       }
-      
-      // const App = () => (
-      //     <div className="container">
-      //       <Form />
-      //       <CartList data={data}/>
-      //     </div>
-      //   )
 
       ReactDOM.render(<App />, root);
     </script>
