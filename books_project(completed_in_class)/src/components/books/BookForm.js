@@ -58,7 +58,7 @@ const BookForm = ({categories, addBookAction}) => {
             <Controller
                 as={<Select options={options}/>}
                 control={control}
-                ref={{ required: true}}
+                inputRef={register({ required: true})}
                 onChange={([selected]) => selected }
                 name={'categoryId'}
                 defaultValue={options[0]}
