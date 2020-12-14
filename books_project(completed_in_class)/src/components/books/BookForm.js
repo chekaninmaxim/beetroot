@@ -16,8 +16,11 @@ const BookForm = ({categories, addBookAction}) => {
         e.preventDefault()
 
         if (errors.categoryId) {
-            setError('categoryId')
-
+            setError("categoryId", {
+                message: "No choosen category!",
+                type: "manual",
+                shouldFocus: true
+            });
             return
         }
 
@@ -63,14 +66,19 @@ const BookForm = ({categories, addBookAction}) => {
             {errors.categoryId && 'Categories  is required.'}
 
             <div className="form-group">
-                <button onClick={() => {
-                    const { categoryId } = getValues()
+                <button
+                    onClick={() => {
+                        const { categoryId } = getValues();
 
-                    if (categoryId.value === '-1') {
-                        setError('categoryId', 'No choosen category')
-                    }
-                }}
-                className="btn btn-primary">Submit
+                        if (categoryId.value === '-1') {
+                            setError('categoryId', {
+                                message: 'No choosen category'
+                            })
+                        }
+                    }}
+                    className="btn btn-primary"
+                >
+                    Submit
                 </button>
             </div>
         </form>
