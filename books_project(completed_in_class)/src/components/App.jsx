@@ -11,7 +11,11 @@ const App = () => <div className="container">
         <Menu />
         <div className={'row'}>
             <Route exact path='/' component={BooksPage}/>
-            <Route path='/add-book' component={BookForm}/>
+            <Route path='/add-book' component={BookForm} />
+            <Route
+                path='/edit-book/:id'
+                render={(props) => <BookForm bookId = {props.match.params.id}/>}
+            />
         </div>
     </div>
 </div>

@@ -1,11 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
 import {selectBook} from '../../ac'
 
 const Book = ({book, isActive, toggle, category}) => (
     <li className={'list-group-item'}>
-        <h2 onClick={toggle}>{book.title}</h2>
+        <div className="row">
+            <div className="col-sm-10">
+                <h2 onClick={toggle}>{book.title}</h2>
+            </div>
+            <div className="col-sm-2">
+                <Link
+                    to={`edit-book/${book._id}`}
+                    className="btn btn-info float-right"
+                >
+                    EDIT
+                </Link>
+            </div>
+        </div>
         <p>Category: {category.title}</p>
         {isActive && <p>{book.desc}</p>}
     </li>
